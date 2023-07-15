@@ -10,7 +10,8 @@ import { Post } from './post.model';
 })
 export class AppComponent implements OnInit {
   url = 'https://http-angular-69faa-default-rtdb.firebaseio.com';
-  loadedPosts = [];
+  loadedPosts: Post[] = [];
+  isFetching = false;
 
   constructor(private http: HttpClient) {}
 
@@ -36,6 +37,7 @@ export class AppComponent implements OnInit {
   }
 
   private fetchPosts() {
+    this.isFetching = true;
     this.http
       .get<{ [key: string]: Post }>(`${this.url}/posts.json`)
       .pipe(
@@ -50,7 +52,8 @@ export class AppComponent implements OnInit {
         })
       )
       .subscribe((posts) => {
-        console.log(posts);
+        this.isFetching = false;
+        this.loadedPosts = posts;
       });
   }
 }
