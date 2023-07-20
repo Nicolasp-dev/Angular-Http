@@ -51,7 +51,12 @@
   </div>
   <div class="row">
     <div class="col-xs-12 col-md-6 col-md-offset-3">
-      <p *ngIf="isFetching">Loading...</p>
+      <p *ngIf="isFetching && !error">Loading...</p>
+      <div class="alert alert-danger" *ngIf="error">
+        <h2>An error ocurred</h2>
+        <p>{{ error }}</p>
+        <button class="btn btn-danger" (click)="onHandlerError()">Okay</button>
+      </div>
       <ul
         class="list-group"
         *ngIf="loadedPosts.length > 1 && !isFetching; else noPosts"
@@ -69,6 +74,6 @@
   </div>
 </div>
 
-<ng-template +ngIf #noPosts>
-  <p *ngIf="!isFetching">No posts available!</p>
+<ng-template #noPosts>
+  <p *ngIf="!isFetching && !error">No posts available!</p>
 </ng-template>
